@@ -2,11 +2,12 @@ from pyquaternion import Quaternion
 from nuscenes.utils.data_classes import RadarPointCloud
 from nuscenes.utils.geometry_utils import transform_matrix
 import numpy as np
+from nuscenes.nuscenes import NuScenes
 
 
 
 
-def project_cloud_to_image(sample):
+def project_cloud_to_image(nusc,sample):
     """
     Project radar points to camera image plane.
 
