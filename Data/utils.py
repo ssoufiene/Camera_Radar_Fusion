@@ -28,7 +28,7 @@ def load_nuscenes(dataroot="/content/data/sets/nuscenes", version="v1.0-mini", v
 
 
 
-def get_2d_boxes(sample):
+def get_2d_boxes(nusc,sample):
     from nuscenes.utils.geometry_utils import view_points
     
 
