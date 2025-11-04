@@ -38,11 +38,11 @@ class Implicit_Dataset(Dataset):
         out['image'] = torch.from_numpy(np.array(image)).permute(2, 0, 1).float() / 255.0
 
         # --- Radar ---
-        radar_map = radar_to_polar_map(sample,nusc)
+        radar_map = radar_to_polar_map(sample,self.nusc)
         out['radar'] = torch.from_numpy(radar_map).permute(2,0,1).float()
 
         # --- Boxes & Labels ---
-        boxes_2d, _ = get_2d_boxes(sample)
+        boxes_2d, _ = get_2d_boxes(self.nusc,sample)
         labels = []
 
         if len(boxes_2d) > 0:
