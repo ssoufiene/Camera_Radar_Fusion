@@ -1,5 +1,9 @@
-from collections import defaultdict
+import torch
+import numpy as np
+import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from collections import defaultdict
+from sklearn.metrics import precision_recall_curve, average_precision_score
 
 
 def compute_iou(box1, box2):

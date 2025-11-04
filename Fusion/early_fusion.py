@@ -1,3 +1,7 @@
+import torch
+import torch.nn as nn
+import torchvision
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 
 def fusion_concatenation(images, radars):
     """Concatenate image and radar: (3, H, W) + (3, H, W) = (6, H, W)"""

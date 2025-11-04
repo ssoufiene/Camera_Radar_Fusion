@@ -1,5 +1,7 @@
 import os
 import subprocess
+import numpy as np
+from PIL import Image
 
 def load_nuscenes(dataroot="/content/data/sets/nuscenes", version="v1.0-mini", verbose=True):
     """
