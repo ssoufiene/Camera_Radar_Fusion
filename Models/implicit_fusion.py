@@ -188,7 +188,6 @@ class Implicit_Fusion(nn.Module):
 
 
 
-    model.train()
 
 
 def train_model(model, dataloader, num_epochs=5, lr=1e-4):
