@@ -46,7 +46,7 @@ class Projection_Dataset(Dataset):
         out['radar'] = torch.from_numpy(radar_map).float()
 
         # --- Boxes & Labels ---
-        boxes_2d, _ = get_2d_boxes(sample)
+        boxes_2d, _ = get_2d_boxes(self.nusc,sample)
         labels = []
 
         if len(boxes_2d) > 0:
