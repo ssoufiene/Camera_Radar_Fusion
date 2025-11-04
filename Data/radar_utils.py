@@ -50,51 +50,32 @@ def project_cloud_to_image(nusc,sample):
     mask = (z > 0) & (u >= 0) & (v >= 0) & (u < 1600) & (v < 900)
     u_filtered = u[mask]
     v_filtered = v[mask]
+    z=z[mask]
+    valid_idx = np.where(mask)[0]
+
 
     # Return as single array of shape (2, N) where N is number of valid points
     uv = np.array([u_filtered, v_filtered])
 
-    return uv,z
+    return uv,z,valid_idx
 
-def radar_points_to_map(nusc, sample, uv, depth, radar_channel='RADAR_FRONT', H=900, W=1600,
+def radar_points_to_map(nusc, sample, uv, depth, valid_idx, radar_channel='RADAR_FRONT', H=900, W=1600,
                         max_depth=50.0, max_speed=10.0):
-    """
-    Build a 3-channel sparse radar map (depth, velocity x, velocity y)
-    from projected radar points.
-
-    Args:
-        nusc: NuScenes dataset object
-        sample: Sample dictionary
-        uv: np.ndarray of shape (2, N) - projected pixel coordinates
-        depth: np.ndarray of shape (N,) - depth (z in camera frame)
-        radar_channel: which radar sensor to use
-        H, W: output image size
-        max_depth: for normalizing depth
-        max_speed: for normalizing velocities
-
-    Returns:
-        radar_map: np.ndarray of shape (3, H, W)
-    """
     radar_map = np.zeros((3, H, W), dtype=np.float32)
 
-    # --- Load radar point cloud ---
     radar_data = nusc.get('sample_data', sample['data'][radar_channel])
     radar_path = nusc.get_sample_data_path(radar_data['token'])
     radar_pc = RadarPointCloud.from_file(radar_path)
 
-    # Extract radar velocities
-    vx_comp = radar_pc.points[8, :]  # velocity x
-    vy_comp = radar_pc.points[9, :]  # velocity y
-    y_grid, x_grid = np.meshgrid(np.arange(H), np.arange(W), indexing='ij')
-    # Loop over projected points and fill map
+    # Only use valid points
+    vx_comp = radar_pc.points[8, valid_idx]
+    vy_comp = radar_pc.points[9, valid_idx]
+
     for i in range(uv.shape[1]):
         u, v = int(uv[0, i]), int(uv[1, i])
-        if 0 <= u < W and 0 <= v < H:
-            # Depth channel
-            radar_map[0, v, u] = np.clip(depth[i]/100, 0, 1)
-            radar_map[1, v, u] = np.clip((vx_comp[i]/max_speed + 1)/2, 0, 1)
-            # Velocity y channel
-            radar_map[2, v, u] = np.clip((vy_comp[i]/max_speed + 1)/2, 0, 1)
+        radar_map[0, v, u] = np.clip(depth[i]/max_depth, 0, 1)
+        radar_map[1, v, u] = np.clip((vx_comp[i]/max_speed + 1)/2, 0, 1)
+        radar_map[2, v, u] = np.clip((vy_comp[i]/max_speed + 1)/2, 0, 1)
 
     return radar_map
 
