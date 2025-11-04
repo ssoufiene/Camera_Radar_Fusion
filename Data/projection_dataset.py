@@ -41,7 +41,7 @@ class Projection_Dataset(Dataset):
         out['image'] = torch.from_numpy(np.array(image)).permute(2, 0, 1).float() / 255.0
 
         # --- Radar ---
-        uv,z = project_cloud_to_image(sample)
+        uv,z = project_cloud_to_image(nusc,sample)
         radar_map = radar_points_to_map(self.nusc,sample,uv,depth=z)
         out['radar'] = torch.from_numpy(radar_map).float()
 
