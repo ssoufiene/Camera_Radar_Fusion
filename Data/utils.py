@@ -1,6 +1,5 @@
 import os
 import subprocess
-from nuscenes.nuscenes import NuScenes
 
 def load_nuscenes(dataroot="/content/data/sets/nuscenes", version="v1.0-mini", verbose=True):
     """
@@ -25,12 +24,14 @@ def load_nuscenes(dataroot="/content/data/sets/nuscenes", version="v1.0-mini", v
     return nusc
 
 
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
-from nuscenes.utils.geometry_utils import view_points
 
 def get_2d_boxes(sample):
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from PIL import Image
+    from nuscenes.utils.geometry_utils import view_points
+    from nuscenes.nuscenes import NuScenes
+
     """
     Project 3D bounding boxes to 2D camera image.
 
