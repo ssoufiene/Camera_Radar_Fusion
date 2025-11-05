@@ -1,6 +1,6 @@
 ## Camera Radar Fusion 
 
-While recent autonomous systems often rely on cameras (looking at you, Tesla), radar–camera fusion remains a powerful and underexplored approach. Cameras provide rich semantics but fail in poor weather; radars offer range and velocity robustness but sparse data. Fusing both yields stronger perception.
+While recent autonomous systems often rely on cameras, radar–camera fusion remains a powerful and underexplored approach. Cameras provide rich semantics but fail in poor weather; radars offer range and velocity robustness but sparse data. Fusing both yields stronger perception.
 
 Developing an effective radar–camera fusion system requires key design choices — **where** and **how** to align the modalities, and **when** and **how** to combine their features for optimal performance.
 
